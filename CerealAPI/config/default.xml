@@ -1,0 +1,5 @@
+<CerealApiConfig>
+	<!-- Set which adaptor to use -->
+	<adaptor>xml</adaptor>
+	<data_dir>/path/to/data/xml/data/directory</data_dir>
+</CerealApiConfig>
