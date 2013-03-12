@@ -6,7 +6,7 @@
  * config along with your query. if you don't pass a config name, 'default' is 
  * used as the default config name.
  */ 
-#error_reporting(E_ERROR | E_PARSE);
+error_reporting(E_ERROR | E_PARSE);
 #error_reporting(E_ERROR | E_PARSE | E_ALL);
 
 /* Include Cereal */
@@ -39,7 +39,10 @@ function make_result($type, $results) {
 	if($type == 'json') {
 		echo json_encode($results);
 	} else if($type == 'raw') {
-		echo $data;
+		echo $results;
+	} else if($type == 'raw_body') {
+		$result = array_pop($results);
+		echo $result->body;
 	}
 }
 
@@ -48,10 +51,10 @@ function make_result($type, $results) {
 
 /* Handle Requests */
 
-if(isset($_GET['result_type'])) {
-	$result_type = $_GET['result_type'];
+if(isset($_GET['format'])) {
+	$format = $_GET['format'];
 } else {
-	$result_type = 'json';
+	$format = 'json';
 }
 
 if(isset($_GET['action'])) {
@@ -59,6 +62,25 @@ if(isset($_GET['action'])) {
 } else {
 	$action = 'get';
 }
+
+if(isset($_GET['fields'])) {
+	$fields = $_GET['fields'];
+} else {
+	$fields = null;
+}
+
+if(isset($_GET['offset'])) {
+	$offset = $_GET['offset'];
+} else {
+	$offset = 0;
+}
+
+if(isset($_GET['limit'])) {
+	$limit = $_GET['limit'];
+} else {
+	$limit = 10;
+}
+
 
 /**
  * Use this to grab a single object or directory
@@ -79,11 +101,34 @@ if($action == 'get') {
 	$results = $cereal->get($query);
 	//var_dump($results);
 	
-	make_result($result_type, $results);
+	make_result($format, $results);
 	exit;
 	
 }
  
+
+/**
+ * Use this to list keys
+ * 
+ * @param $query
+ * @return array of keys
+ */ 
+if($action == 'ls') {
+	
+	$query = isset($_GET['q']) ? $_GET['q'] : null;
+	
+	if($query == null) {
+		die('no query');
+	}
+	
+	$results = $cereal->ls($query);
+	//var_dump($results);
+	
+	make_result($format, $results);
+	exit;
+	
+}
+
 /**
  * This function saves or updates the object
  * @param $key

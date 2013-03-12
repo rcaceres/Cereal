@@ -135,6 +135,43 @@ class CerealXml implements CerealInterface
 		return true;
 	}	
 	
+	public function ls($query) 
+	{
+		$result = array();
+		/*
+		 * We remove any extension
+		 */ 
+		
+		$query_path = $this->data_path . DIRECTORY_SEPARATOR . $query;
+		$query_path = rtrim($query_path, DIRECTORY_SEPARATOR);
+		
+		/*
+		 * This returns raw directory order
+		 */ 
+		$files           = FileUtils::ReadDirectory($query_path);
+		
+		/*
+		 * This sort by the directory time
+		 */ 
+		//$files        = $this->_scandir_by_mtime($query_path);
+
+		
+		//var_dump($files); exit;
+
+		foreach($files as $key => $file)
+		{
+			$file_extension = pathinfo($file, PATHINFO_EXTENSION);
+			
+			if( ! in_array($file, array('.', '..')) 
+					&& ($file_extension == 'xml' || ($file_extension == 'php' && strstr($file, '.xml.php') != false)))
+			{
+				$result[] = pathinfo($file, PATHINFO_FILENAME);
+			}
+		}
+		
+		return $result;
+	}
+	
 	public function delete($key) 
 	{
 		$key_full = $this->data_path . DIRECTORY_SEPARATOR . $key;

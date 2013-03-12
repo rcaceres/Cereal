@@ -23,7 +23,15 @@ interface CerealInterface {
 	 * @param $value
 	 */ 
 	public function set($key, $value);
-	
+
+	/**
+	 * Use this to list keys
+	 * 
+	 * @param $query
+	 * @return array of keys
+	 */ 
+	public function ls($query);
+
 	/**
 	 * maybe use this to delete an object
 	 */ 

@@ -37,7 +37,7 @@ class CerealMysql implements CerealInterface {
 	{
 		
 	}
-	 
+	
 	 
 	/**
 	 * This function saves or updates the object
@@ -48,6 +48,8 @@ class CerealMysql implements CerealInterface {
 	{
 		
 	}
+	
+	public function ls($query){}
 	
 	public function delete($key) 
 	{

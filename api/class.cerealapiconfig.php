@@ -2,7 +2,7 @@
 
 class CerealApiConfig {
 	public $adaptor = 'xml';
-	public $allow_globs = false;
+	public $allow_globs = true;
 	
 	/* properties for xml */
 	public $data_dir = '';
